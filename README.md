@@ -1,6 +1,7 @@
 # Link Prediction with Physics-Inspired Graph Neural Networks
 
-This repository contains the code and to train and reproduce the experiments in the paper 'Link Prediction with Physics-Inspired Graph Neural Networks'.  
+This repository contains the code and to train and reproduce the experiments in the paper 'Link Prediction with Physics-Inspired Graph Neural Networks'.   
+We have available the appendix of the paper in the 'appendix.pdf' file. 
 We propose GRAFF-LP a link prediction pipeline built upon PIrd GNNs and a novel readout function that enhances the performances.  
 The general overview of our framework follows.  
 ![Example Image](architecture.png)  
