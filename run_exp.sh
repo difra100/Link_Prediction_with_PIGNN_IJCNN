@@ -1,0 +1,5 @@
+#python main.py -dataset_name 'minesweeper' -model_name 'NCNC' -device 'cuda' -num_data_splits 1 -mode 'hp' -sweep True -wb True -count 400 -patience 200 -epochs 5000 -sweep_method 'grid' -resume_sweep 'kemyuym5'
+#python main.py -dataset_name 'roman_empire' -model_name 'NCNC' -device 'cuda' -num_data_splits 1 -mode 'hp' -sweep True -wb True -count 400 -patience 200 -epochs 5000 -sweep_method 'grid' -resume_sweep 'dit1g4cl'
+python main.py -dataset_name 'amazon_ratings' -model_name 'NCNC' -device 'cuda' -num_data_splits 1 -mode 'hp' -sweep True -wb True -count 400 -patience 200 -epochs 5000 -sweep_method 'grid' -resume_sweep 'dcso2z59'
+python main.py -dataset_name 'questions' -model_name 'NCNC' -device 'cuda' -num_data_splits 1 -mode 'hp' -sweep True -wb True -count 400 -patience 200 -epochs 5000 -sweep_method 'grid'
+python main.py -dataset_name 'tolokers' -model_name 'NCNC' -device 'cuda' -num_data_splits 1 -mode 'hp' -sweep True -wb True -count 400 -patience 200 -epochs 5000 -sweep_method 'grid'
