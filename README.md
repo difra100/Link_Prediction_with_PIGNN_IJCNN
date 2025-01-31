@@ -25,10 +25,6 @@ python significance_test.py
 ```
 Now the code to reproduce the experiments follows. Note that by changing the argument `readout_type` from hadamard to gradient, we obtain the performance improvement specified in the paper.  
 
-## GRAFF hyperparameters for Texas
-```
-python main.py -dataset_name 'Texas' -model_name 'GRAFF' -device 'cpu' -eval True -num_data_splits 5 -mode 'test' -lr 0.01 -wd 0 -num_layers 3 -step 0.1 -hidden_dim 256 -output_dim 32 -mlp_layer 0 -dropout 0.6 -input_dropout 0 -negatives 0.25 -normalize True -readout_type 'hadamard'
-```
 
 ## GRAFF hyperparameters for amazon_ratings
 ```
