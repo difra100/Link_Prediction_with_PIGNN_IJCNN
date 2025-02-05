@@ -20,11 +20,15 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 ```
 pip install -r requirements.txt
 ```
+
 ### To print the significance test results
 ```
 python significance_test.py
 ```
 Now the code to reproduce the experiments follows. Note that by changing the argument `readout_type` from hadamard to gradient, we obtain the performance improvement specified in the paper.  
+
+### Download our data splits!
+Before trying to reproduce the experiments, you should populate the `data/` folder with the files downloaded at this [link](https://www.dropbox.com/scl/fi/b8g6pyyipldjfnwdjjmvw/link_pred_data.zip?rlkey=9jifqnti268dcnsuayelqq59u&st=hpxi88ye&dl=0).
 
 
 ## GRAFF hyperparameters for amazon_ratings

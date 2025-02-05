@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from src.animation_utils import compute_auroc
-from scipy import stats  # Import the 'stats' module from SciPy.
+from scipy import stats  
 import os
 
 
@@ -346,13 +346,13 @@ def display_results_per_metric(file, metric_list, models, dataset, name_list):
     :param dataset_list: List of dataset names.
     """
     plt.rcParams.update({
-        'font.size': 20,          # General font size
-        'axes.titlesize': 20,     # Title font size
-        'axes.labelsize': 18,     # X and Y axis label size
-        'xtick.labelsize': 14,    # X-axis tick label size
-        'ytick.labelsize': 14,    # Y-axis tick label size
-        'legend.fontsize': 16,    # Legend font size
-        'figure.titlesize': 24     # Overall figure title font size
+        'font.size': 20,          
+        'axes.titlesize': 20,     
+        'axes.labelsize': 18,     
+        'xtick.labelsize': 14,    
+        'ytick.labelsize': 14,    
+        'legend.fontsize': 16,    
+        'figure.titlesize': 24     
     })
     fig, ax = plt.subplots()
     bar_width = 0.1
@@ -378,7 +378,6 @@ def display_results_per_metric(file, metric_list, models, dataset, name_list):
     
         ax.bar(index + i * bar_width, means, bar_width, alpha=opacity, yerr=stds, label=model)
     
-    #ax.set_xlabel(f'{dataset}')
     ax.set_ylabel('$AUC$')
     ax.set_title('')
     ax.set_xticks(index + bar_width * len(models) / 2)
@@ -387,14 +386,13 @@ def display_results_per_metric(file, metric_list, models, dataset, name_list):
 
     ax.set_xticklabels(name_list)
     
-    # Move the legend to the bottom-right corner
     ax.legend(loc='lower right', bbox_to_anchor=(1, 0))
     
     plt.tight_layout()
     prefix = f'AUROCS_bar/{dataset}/'
     os.makedirs(os.path.dirname(prefix), exist_ok=True)
     pdf_name = f'{prefix}+file.pdf'
-    plt.savefig(pdf_name, format='pdf', bbox_inches='tight')  # Use bbox_inches to handle text cutoff
+    plt.savefig(pdf_name, format='pdf', bbox_inches='tight')  
     print(f'Figure saved as {pdf_name}')
     plt.show()
 
@@ -414,7 +412,7 @@ def display_differential_results(file1, file2, metric_type1, metric_type2, model
     :param pdf_name: Name of the output PDF file.
     """
     
-    fig, ax = plt.subplots(figsize=(10, 6))  # Adjust figure size for better readability
+    fig, ax = plt.subplots(figsize=(10, 6))  
     bar_width = 0.1
     opacity = 0.8
     index = np.arange(len(dataset_list))
@@ -443,20 +441,16 @@ def display_differential_results(file1, file2, metric_type1, metric_type2, model
         minimum = [min(mean2, mean1) for mean1, mean2 in zip(means1, means2)]
         maximum = [max(mean2, mean1) for mean1, mean2 in zip(means1, means2)]
 
-        # Percentage improvement
         changes = [f'{round(100*((mean2 - mean1) / mean1), 2)}%' if mean1 != 0 else '0%' for mean1, mean2 in zip(means1, means2)]
         
         colors = ['green' if imp > 0 else 'red' for imp in improvement]
 
-        # Plot maximum and minimum bars
         ax.bar(index + (i+0.1) * bar_width, maximum, bar_width, alpha=opacity, color=colors, edgecolor='black')
         ax.bar(index + (i+0.1) * bar_width, minimum, bar_width, alpha=opacity, label=model, edgecolor='black')
 
-        #Adjust position of text
         for j, value in enumerate(changes):
             ax.text(index[j] + (i+0.1) * bar_width, maximum[j] + 0.03, value, ha='center', va='bottom', color='black', fontsize=9)  # Smaller font size, adjusted position
 
-    # Set labels, title, and ticks
     ax.set_xlabel('Dataset', fontsize=12)
     ax.set_ylabel('Auroc Improvement', fontsize=12)
     ax.set_title(title, fontsize=14)
@@ -464,14 +458,12 @@ def display_differential_results(file1, file2, metric_type1, metric_type2, model
     ax.set_xticklabels(dataset_list, fontsize=12)
     ax.legend()
 
-    # Make sure the layout is tight
     plt.tight_layout()
 
 
-    # Save as PDF if save_as_pdf is True
     if save_as_pdf:
         pdf_name = f'{title}.pdf'
-        plt.savefig(pdf_name, format='pdf', bbox_inches='tight')  # Use bbox_inches to handle text cutoff
+        plt.savefig(pdf_name, format='pdf', bbox_inches='tight')  
         print(f'Figure saved as {pdf_name}')
 
     plt.show(block=False)
@@ -509,74 +501,62 @@ def compare_among_readouts(category1, category2, file1, file2, model_list, datas
 
         input('')
 def plot_box_plot(model_name, dataset_name):
-    # Step 1: Load the distributions
     neg_distribution = np.load(f"gradient_distributions/{model_name}/{dataset_name}/neg_distribution.npy")
     pos_distribution = np.load(f"gradient_distributions/{model_name}/{dataset_name}/pos_distribution.npy")
 
-    # Step 2: Ensure that the shapes of both distributions are the same
     assert neg_distribution.shape == pos_distribution.shape, "Both distributions must have the same shape"
 
     n, n_samples = neg_distribution.shape
 
-    # Step 3: Create a figure and axis for plotting
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    # Step 4: Prepare to plot the box plots for each distribution along the 'n' dimension
     for i in range(n):
-        # For each row (distribution), extract samples from positive and negative distributions
         pos_data = pos_distribution[i, :]
         neg_data = neg_distribution[i, :]
 
-        # Compute AUROC (replace with your real function)
         auroc = round(100 * compute_auroc(torch.from_numpy(neg_data), torch.from_numpy(pos_data)), 2)
 
-        # Create a box plot for the positive distribution
         pos_bp = ax.boxplot(pos_data, positions=[2 * i], widths=0.6, patch_artist=True, 
                             boxprops=dict(facecolor='blue', color='blue'))
 
-        # Create a box plot for the negative distribution
         neg_bp = ax.boxplot(neg_data, positions=[2 * i + 1], widths=0.6, patch_artist=True, 
                             boxprops=dict(facecolor='red', color='red'))
 
-        # Step 4b: Add text for GS = auroc above each layer (above the associated box plot)
-        offset = 0.05 * (ax.get_ylim()[1] - ax.get_ylim()[0])  # 5% of the y-axis range
+        offset = 0.05 * (ax.get_ylim()[1] - ax.get_ylim()[0])  
 
-        # Adjust the position of the text, moving it upwards
         ax.text(2 * i + 0.5, ax.get_ylim()[1] + offset, f'$GS = {auroc:.2f}$', 
-                ha='center', va='bottom', fontsize=12, color='black')  # Increased font size
+                ha='center', va='bottom', fontsize=12, color='black')  
 
-    # Step 5: Add custom labels and title with larger fonts
     ax.set_xticks([2 * i + 0.5 for i in range(n)])
-    ax.set_xticklabels([f'{i}' for i in range(n)], fontsize=18)  # Increased font size for tick labels
+    ax.set_xticklabels([f'{i}' for i in range(n)], fontsize=18)  
     if model_name == 'GRAFF':
         model_name_ = 'GRAFF-LP'
     else:
         model_name_ = model_name
     ax.set_title("$||(∇\mathbf{H}^t)_{i,j}||^2$ distribution for " +f"{model_name_} on {dataset_name}", fontsize=24)  # Increased title font size
-    ax.set_ylabel("Values (log scale)", fontsize=18)  # Increased ylabel font size
+    ax.set_ylabel("Values (log scale)", fontsize=18)  
 
-    # Set y-axis to logarithmic scale
     ax.set_yscale('log')
 
-    # Step 6: Add a legend for the colors with larger font
     blue_patch = mpatches.Patch(color='blue', label='Positive edges')
     red_patch = mpatches.Patch(color='red', label='Negative edges')
-    ax.legend(handles=[blue_patch, red_patch], loc='lower right', fontsize=18)  # Increased legend font size
+    ax.legend(handles=[blue_patch, red_patch], loc='lower right', fontsize=18) 
 
-    # Step 7: Save the plot as a PDF
     plt.tight_layout()
     plt.savefig(f'gradient_distributions/{model_name}/{dataset_name}/box_plot.pdf', format='pdf', bbox_inches='tight')
 
-    # Step 8: Show the plot (optional)
     plt.show()
 
 
 
-#dataset_list = ['Texas', 'Cornell', 'Wisconsin', 'amazon_ratings', 'roman_empire', 'minesweeper', 'questions']
-dataset_list = ['tolokers']
 
-models = ['mlp', 'GCN', 'SAGE', 'GAT', 'ELPH']
-models_gradient = ['mlp', 'GCN', 'SAGE', 'GAT']
+# NCNC does not work with tolokers, since it goes out of memory
+
+dataset_list = ['amazon_ratings', 'roman_empire', 'minesweeper', 'questions']#, 'tolokers']
+# dataset_list = ['tolokers']
+
+models = ['mlp', 'GCN', 'SAGE', 'GAT', 'ELPH', 'NCNC']
+models_gradient = ['mlp', 'GCN', 'SAGE', 'GAT', 'ELPH', 'NCNC']
 
 mod1 = 'GRAFF'
 metric = 'accuracy'  
@@ -609,16 +589,16 @@ name_list = ['$AUC$', '$AUC_{hm,hm}$', '$AUC_{ht,ht}$', '$AUC_{ht,hm}$', '$AUC_{
 
 
 
-compare_among_categories(exp_elements, models + [mod1], dataset_list)
+#compare_among_categories(exp_elements, models + [mod1], dataset_list)
 
-display_results_per_metric(file_hadamard, auroc_elements, models + [mod1], dataset = 'tolokers', name_list = name_list)
+#display_results_per_metric(file_hadamard, auroc_elements, models + [mod1], dataset = 'tolokers', name_list = name_list)
 
 # display_results_per_datasets(file_hadamard, auroc, models + [mod1], dataset_list)
 
-plot_box_plot(model_name = 'GRAFF', dataset_name = 'tolokers')
+#plot_box_plot(model_name = 'GRAFF', dataset_name = 'tolokers')
 
-compare_among_readouts(auroc_elements, exp_elements, file_hadamard, file_gradient, models + [mod1], dataset_list)
-compare_among_readouts(auroc_elements, exp_elements, file_gradient, file_gradient, models + [mod1], dataset_list)
+# compare_among_readouts(auroc_elements, exp_elements, file_hadamard, file_gradient, models + [mod1], dataset_list)
+# compare_among_readouts(auroc_elements, exp_elements, file_gradient, file_gradient, models + [mod1], dataset_list)
 
 
 dataframe_gradient = plot_table(dataset_list, models_gradient, mod1, metric = metric, file = file_gradient)
